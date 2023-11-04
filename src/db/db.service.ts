@@ -46,14 +46,7 @@ export class DbService {
   }
 
   async findAll() {
-    return await this.dbRepository
-      .find()
-      .populate("statuses")
-      .populate({
-        path: "actualStatus",
-        strictPopulate: false,
-      })
-      .exec();
+    return await this.dbRepository.find().populate("actualStatus").exec();
   }
 
   async findAllByUser(userId: string) {

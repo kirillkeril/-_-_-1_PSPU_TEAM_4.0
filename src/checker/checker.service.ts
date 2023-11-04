@@ -37,7 +37,7 @@ export class CheckerService {
             chatId: userId,
             message: `ОШИБКА!!!!!!!! ${db.name}`,
           })
-          .catch(() => console.log("e"));
+          .catch(() => console.log("error"));
       }
 
       delete metrics["status"];
