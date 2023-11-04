@@ -13,7 +13,6 @@ export class StatusService {
   ) {}
 
   async create(createStatusDto: CreateStatusDto) {
-    console.log("asdsad", createStatusDto);
     const db = await this.dbService.findOne(createStatusDto.dbId);
     if (!db) throw new NotFoundException();
     const status = await this.statusRepository.create({
@@ -22,6 +21,9 @@ export class StatusService {
       metrics: [...createStatusDto.metrics],
       timeStamp: Date.now(),
     });
+    db.statuses.push(status);
+    db.actualStatus = status;
+    await db.save();
     await status.save();
     return status;
   }

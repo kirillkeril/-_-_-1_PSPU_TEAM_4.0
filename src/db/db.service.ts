@@ -62,7 +62,6 @@ export class DbService {
     const res = await this.dbRepository
       .find({ user: user.id })
       .populate("statuses")
-      .populate("actualStatus")
       .exec();
     if (!res) throw new NotFoundException();
     return res;

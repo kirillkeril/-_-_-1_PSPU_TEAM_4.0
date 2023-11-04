@@ -37,7 +37,6 @@ export class CheckerService {
       dbId: dbId,
       metrics: metricsValues,
     });
-    console.log(res);
     return res;
   }
 }
