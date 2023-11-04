@@ -30,7 +30,7 @@ export class DbController {
         id: result.id,
         name: result.name,
         ip: result.dbIp,
-        statuses: result.statuses,
+        actualStatus: result.actualStatus,
       });
     } catch (e) {
       throw new BadRequestException(new DbViewModel(e, "ERROR"));
@@ -46,7 +46,8 @@ export class DbController {
         id: d.id,
         name: d.name,
         ip: d.dbIp,
-        statuses: d.statuses,
+        // statuses: d.statuses,
+        actualStatus: d.actualStatus,
       };
     });
   }
@@ -60,7 +61,7 @@ export class DbController {
         id: d.id,
         name: d.name,
         ip: d.dbIp,
-        statuses: d.statuses,
+        actualStatus: d.actualStatus,
       };
     });
   }
@@ -74,6 +75,7 @@ export class DbController {
       name: res.name,
       ip: res.dbIp,
       statuses: res.statuses,
+      actualStatus: res.actualStatus,
     };
   }
 

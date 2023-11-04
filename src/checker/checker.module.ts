@@ -17,5 +17,6 @@ import { DbModule } from "../db/db.module";
   ],
   providers: [CheckerService],
   controllers: [CheckerController],
+  exports: [CheckerService],
 })
 export class CheckerModule {}

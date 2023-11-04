@@ -5,8 +5,10 @@ import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { DbModule } from "./db/db.module";
 import { StatusModule } from "./status/status.module";
-import { CheckerModule } from './checker/checker.module';
+import { CheckerModule } from "./checker/checker.module";
 import * as process from "process";
+import { ScheduleModule } from "@nestjs/schedule";
+import { TaskModule } from "./task/task.module";
 
 @Module({
   imports: [
@@ -18,11 +20,14 @@ import * as process from "process";
       dbName: `${process.env.DB_NAME}`,
       directConnection: true,
     }),
+
+    ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
     DbModule,
     StatusModule,
     CheckerModule,
+    TaskModule,
   ],
 })
 export class AppModule {}

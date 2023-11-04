@@ -5,7 +5,8 @@ export interface DbData {
   id: string;
   name: string;
   ip: string;
-  statuses: Status[];
+  statuses?: Status[];
+  actualStatus: Status;
 }
 
 export class DbViewModel {

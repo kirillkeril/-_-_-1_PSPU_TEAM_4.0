@@ -11,32 +11,48 @@ export class CheckerService {
     private readonly statusService: StatusService,
   ) {}
 
-  async check(dbId: string) {
-    const db = await this.dbService.findOne(dbId);
-    if (!db)
-      throw new BadRequestException({
-        message: `База данных с id ${dbId} не найдена`,
-        status: "ERROR",
-      });
+  async check(dbId: string, userId: string) {
+    try {
+      const db = await this.dbService.findOne(dbId);
+      if (!db)
+        throw new BadRequestException({
+          message: `База данных с id ${dbId} не найдена`,
+          status: "ERROR",
+        });
 
-    const connectionString = db.connection;
-    const result = await this.httpService.axiosRef.post(
-      "http://localhost:8000/",
-      {
-        connection: `${connectionString}`,
-      },
-    );
-    const metrics = { ...result.data };
-    delete metrics["status"];
-    const keys = Object.keys(metrics);
-    const metricsValues = keys.map((k) => {
-      return { key: k, value: metrics[k] };
-    });
-    const res = await this.statusService.create({
-      state: result.data["status"],
-      dbId: dbId,
-      metrics: metricsValues,
-    });
-    return res;
+      const connectionString = db.connection;
+
+      let result;
+      await this.httpService.axiosRef
+        .post("http://195.54.32.97:3000", {
+          connection: `${connectionString}`,
+        })
+        .then((r) => (result = r))
+        .catch(() => console.log("Error"));
+      const metrics = { ...result.data };
+
+      if (metrics["status"].toString().toUpperCase() == "ERROR") {
+        this.httpService.axiosRef
+          .post("http://195.54.32.97:4000/sendMessage", {
+            chatId: userId,
+            message: `ОШИБКА!!!!!!!! ${db.name}`,
+          })
+          .catch(() => console.log("e"));
+      }
+
+      delete metrics["status"];
+      const keys = Object.keys(metrics);
+      const metricsValues = keys.map((k) => {
+        return { key: k, value: metrics[k] };
+      });
+      const res = await this.statusService.create({
+        state: result.data["status"],
+        dbId: dbId,
+        metrics: metricsValues,
+      });
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

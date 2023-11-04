@@ -36,7 +36,7 @@ export class Db {
   @Prop({
     required: false,
     type: mongoose.Schema.Types.ObjectId,
-    ref: Status.name,
+    ref: "Status",
   })
   actualStatus: Status;
 

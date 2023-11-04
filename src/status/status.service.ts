@@ -22,7 +22,7 @@ export class StatusService {
       timeStamp: Date.now(),
     });
     db.statuses.push(status);
-    db.actualStatus = status;
+    db.$set("actualStatus", status);
     await db.save();
     await status.save();
     return status;
